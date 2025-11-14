@@ -20,6 +20,107 @@
     <script src="dashboard.js"></script>
 </head>
 <body>
-    
+    <section id="sideBar" class="w-[180px] bg-(--azul-dim) h-full fixed">
+        <header class="h-full">
+            <nav class="flex flex-col justify-between h-full py-6 pl-4">
+                <ul class="space-y-4 text-(--blanco-frio)">
+                    <li><a href="" class="w-[130px] h-[40px] flex items-center pl-2 rounded hover:bg-(--blanco-frio) hover:text-(--azul-dim) border-b transition">Dashboard</a></li>
+                    <li><a href="" class="w-[130px] h-[40px] flex items-center pl-2 rounded hover:bg-(--blanco-frio) hover:text-(--azul-dim) border-b transition">Facturacion</a></li>
+                    <li><a href="" class="w-[130px] h-[40px] flex items-center pl-2 rounded hover:bg-(--blanco-frio) hover:text-(--azul-dim) border-b transition">Medicamentos</a></li>
+                    <li><a href="" class="w-[130px] h-[40px] flex items-center pl-2 rounded hover:bg-(--blanco-frio) hover:text-(--azul-dim) border-b transition">Productos</a></li>
+                    <li><a href="" class="w-[130px] h-[40px] flex items-center pl-2 rounded hover:bg-(--blanco-frio) hover:text-(--azul-dim) border-b transition">Proveedores</a></li>
+                    <li><a href="" class="w-[130px] h-[40px] flex items-center pl-2 rounded hover:bg-(--blanco-frio) hover:text-(--azul-dim) border-b transition">Compras</a></li>
+                </ul>
+                <ul>
+                    <li><a href="" class="bg-(--blanco-frio) text-(--negro-suave) w-[90%] h-[40px] flex items-center justify-center rounded hover:bg-(--azul-dim-hover) hover:text-(--blanco-frio) transition">Cerrar Sesion</a></li>
+                </ul>
+            </nav>
+        </header>
+    </section>
+
+    <section id="heroMain" class="ml-[180px] px-4 pt-6">
+        <h1 class="text-4xl text-(--azul-dim) font-semibold">Dashboard</h1>
+        <div class="contDatos grid grid-cols-2 gap-4 mt-4">
+            <div class="card bg-(--blanco-frio) shadow py-6 px-4 hover:scale-102 transition border-(--azul-dim) border-1 rounded">
+                <h3 class="mb-2 text-(--azul-dim)">Facturacion Diaria</h3>
+                <span id="facturacionDiaria" class="font-semibold text-2xl text-(--negro-suave)">$323.200</span>
+            </div>
+            <div class="card bg-(--blanco-frio) shadow py-6 px-4 hover:scale-102 transition border-(--azul-dim) border-1 rounded">
+                <h3 class="mb-2 text-(--azul-dim)">Cantidad de Ventas</h3>
+                <span id="cantidadVentas" class="font-semibold text-2xl text-(--negro-suave)"> 230</span>
+            </div>
+        </div>
+
+        <div id="graficoBarras" class="w-full">
+            <canvas id="barChart" class="mt-6 bg-(--blanco-frio) p-4 rounded shadow w-full max-h-[400px]">
+
+            </canvas>
+        </div>
+
+        <div class="mt-6 grid grid-cols-2 gap-4">
+            <div class="card bg-(--blanco-frio) p-4 rounded shadow">
+                <h3 class="text-(--azul-dim) font-semibold mb-2">Métodos de Pago</h3>
+                <canvas id="piePayments" class="w-full h-64 bg-(--blanco-frio) rounded"></canvas>
+                <div id="legendPayments" class="mt-2 text-sm text-(--negro-suave)" style="display:none"></div>
+            </div>
+            <div class="card bg-(--blanco-frio) p-4 rounded shadow">
+                <h3 class="text-(--azul-dim) font-semibold mb-2">Por Sucursales</h3>
+                <canvas id="pieBranches" class="w-full h-64 bg-(--blanco-frio) rounded"></canvas>
+                <div id="legendBranches" class="mt-2 text-sm text-(--negro-suave)" style="display:none"></div>
+            </div>
+        </div>
+
+        <div id="contTops"class="">
+            <div id="contProductosTop" class="mt-6 grid grid-cols-2 gap-4">
+                <div class="producto">
+                    <h3 class="text-(--azul-dim) font-semibold mb-2">Productos Más Vendidos</h3>
+                    <ul class="p-4">
+                        <li class="mb-2 shadow p-2 rounded flex justify-between bg-(--blanco-frio) text-(--negro-suave)">
+                            <span>333222</span>
+                            <span>Barra Proteica</span>
+                            <span>150 Unidades</span>                   
+                            <span class="bg-(--azul-dim) text-(--blanco-frio) w-[130px] text-center rounded">Sucursal Centro</span>                               
+                        </li>
+                        <li class="mb-2 shadow p-2 rounded flex justify-between bg-(--blanco-frio) text-(--negro-suave)">
+                            <span>333222112</span>
+                            <span>Crema Corporal</span>
+                            <span>120 Unidades</span>                   
+                            <span class="bg-(--azul-dim) text-(--blanco-frio) w-[130px] text-center rounded">Sucursal Este</span>                               
+                        </li>
+                        <li class="mb-2 shadow p-2 rounded flex justify-between bg-(--blanco-frio) text-(--negro-suave)">
+                            <span>999845</span>
+                            <span>Desodorante Dove</span>
+                            <span>100 Unidades</span>                   
+                            <span class="bg-(--azul-dim) text-(--blanco-frio) w-[130px] text-center rounded">Sucursal Sur</span>                               
+                        </li>
+                    </ul>
+                </div>
+                <div class="medicamentos">
+                    <h3 class="text-(--azul-dim) font-semibold mb-2">Medicamentos Más Vendidos</h3>
+                    <ul class="p-4 ">
+                        <li class="mb-2 shadow p-2 rounded flex justify-between bg-(--blanco-frio) text-(--negro-suave)">
+                            <span>123442</span>
+                            <span>Aspirina</span>
+                            <span>200 Unidades</span>
+                            <span class="bg-(--azul-dim) text-(--blanco-frio) w-[130px] text-center rounded">Sucursal Norte</span>
+                        </li>
+                        <li class="mb-2 shadow p-2 rounded flex justify-between bg-(--blanco-frio) text-(--negro-suave)">
+                            <span>1333</span>
+                            <span>Ibuprofeno</span>
+                            <span>190 Unidades</span>
+                            <span class="bg-(--azul-dim) text-(--blanco-frio) w-[130px] text-center rounded">Sucursal Sur</span>
+                        </li>
+                        <li class="shadow p-2 rounded flex justify-between bg-(--blanco-frio) text-(--negro-suave)">
+                            <span>3332123</span>
+                            <span>Amoxilina</span>
+                            <span>124 Unidades</span>
+                            <span class="bg-(--azul-dim) text-(--blanco-frio) w-[130px] text-center rounded">Sucursal Centro</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
 </body>
 </html>
