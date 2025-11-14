@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/src/assets/icon.ico" type="image/x-icon">
+    <title>Sistema de Farmacia - Facturacion</title>
+    <style>
+        :root {
+            --celeste-ice: #AEE3FF;
+            --azul-dim: #446D9E;
+            --azul-dim-hover: #3B5B8C;
+            --plata-mate: #BCC7D1;
+            --blanco-frio: #F9FBFD;
+            --blanco-sucio: #f7f7f7;
+            --negro-suave: #2E2E2E;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="facturacion.js"></script>
+</head>
+<body>
+    <section id="sideBar" class="w-[180px] bg-(--azul-dim) h-full fixed">
+        <header class="h-full">
+            <nav class="flex flex-col justify-between h-full py-6 pl-4">
+                <ul class="space-y-4 text-(--blanco-frio)">
+                    <li><a href="../dashboard.html" class="w-[130px] h-[40px] flex items-center pl-2 rounded hover:bg-(--blanco-frio) hover:text-(--azul-dim) border-b transition">Dashboard</a></li>
+                    <li><a href="../facturacion/facturacion.html" class="w-[130px] h-[40px] flex items-center pl-2 rounded hover:bg-(--blanco-frio) hover:text-(--azul-dim) border-b transition">Facturacion</a></li>
+                    <li><a href="../medicamentos/medicamentos.html" class="w-[130px] h-[40px] flex items-center pl-2 rounded hover:bg-(--blanco-frio) hover:text-(--azul-dim) border-b transition">Medicamentos</a></li>
+                    <li><a href="../productos/productos.html" class="w-[130px] h-[40px] flex items-center pl-2 rounded hover:bg-(--blanco-frio) hover:text-(--azul-dim) border-b transition">Productos</a></li>
+                    <li><a href="../proveedores/proveedores.html" class="w-[130px] h-[40px] flex items-center pl-2 rounded hover:bg-(--blanco-frio) hover:text-(--azul-dim) border-b transition">Proveedores</a></li>
+                    <li><a href="../compras/compras.html" class="w-[130px] h-[40px] flex items-center pl-2 rounded hover:bg-(--blanco-frio) hover:text-(--azul-dim) border-b transition">Compras</a></li>
+                </ul>
+                <ul>
+                    <li><a href="../../../index.html" class="bg-(--blanco-frio) text-(--negro-suave) w-[90%] h-[40px] flex items-center justify-center rounded hover:bg-(--azul-dim-hover) hover:text-(--blanco-frio) transition">Cerrar Sesion</a></li>
+                </ul>
+            </nav>
+        </header>
+    </section>
+
+    <main id="main" class="ml-[180px] px-4 pt-6">
+        <h1 class="text-(--azul-dim) font-semibold text-4xl">Facturacion</h1>
+        <div class="contGanancias grid grid-cols-3 gap-4 mt-4">
+            <div class="gananciaDiaria bg-(--blanco-frio) shadow py-6 px-4 hover:scale-102 transition border-(--azul-dim) border-1 rounded">
+                <h2 class="text-(--azul-dim)">Ganancia Diaria</h2>
+                <span class="font-semibold text-(--negro-suave) text-2xl">$200.120</span>
+            </div>
+            <div class="gananciaMensual bg-(--blanco-frio) shadow py-6 px-4 hover:scale-102 transition border-(--azul-dim) border-1 rounded">
+                <h2 class="text-(--azul-dim)">Ganancia Mensual</h2>
+                <span class="font-semibold text-(--negro-suave) text-2xl">$5.600.000</span>
+            </div>
+            <div class="gananciaAnual bg-(--blanco-frio) shadow py-6 px-4 hover:scale-102 transition border-(--azul-dim) border-1 rounded">
+                <h2 class="text-(--azul-dim)">Ganancia Anual</h2>
+                <span class="font-semibold text-(--negro-suave) text-2xl">$67.200.000</span>
+            </div>
+        </div>
+        <div id="graficoBarras" class="mt-6">
+            <span class="text-(--azul-dim)">Filtrar por año</span>
+            <select name="" id="filtroAñoGrafico" class="py-2 px-6 rounded border border-(--azul-dim) shadow">
+                <option value="2025">2025</option>
+                <option value="2024">2024</option>
+                <option value="2023">2023</option>
+            </select>
+            <canvas id="barChart" class="mt-6 bg-(--blanco-frio) p-4 rounded shadow w-full max-h-[400px]">
+                
+            </canvas>
+        </div>
+    </main>
+</body>
+</html>

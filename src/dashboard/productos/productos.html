@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/src/assets/icon.ico" type="image/x-icon">
-    <title>Sistema de Farmacia - Medicamentos</title>
+    <title>Sistema de Farmacia - Productos</title>
     <style>
         :root {
             --celeste-ice: #AEE3FF;
@@ -39,15 +39,14 @@
     </section>
 
     <section id="heroMain" class="ml-[180px] px-4 pt-6">
-        <h1 class="text-(--azul-dim) font-semibold text-4xl">Medicamentos</h1>
+        <h1 class="text-(--azul-dim) font-semibold text-4xl">Productos</h1>
         <div class="contAll bg-(--blanco-frio) shadow py-6 px-4 rounded mt-4">
             <div class="contFiltros flex gap-4 items-center justify-between bg-white py-4 rounded px-4">
-                <input type="text" placeholder="Buscar medicamentos..." class="px-2 py-1 rounded w-full focus:outline-none focus:ring-2 focus:ring-(--azul-dim)">
-                <select name="" id="filtroSucursalMedicamentos" class="styled-select w-full focus:outline-none focus:ring-2 focus:ring-(--azul-dim) rounded py-2">
-                    <!-- Se cargan las sucursales dinamicamente -->
+                <input type="text" placeholder="Buscar productos..." class="px-2 py-1 rounded w-full focus:outline-none focus:ring-2 focus:ring-(--azul-dim)">
+                <select name="" id="filtroSucursalProductos" class="styled-select w-full focus:outline-none focus:ring-2 focus:ring-(--azul-dim) rounded py-2">
                     <option value="">Seleccionar Sucursal</option>
                 </select>
-                <select name="" id="filtroPrecioMedicamentos" class="styled-select w-full focus:outline-none focus:ring-2 focus:ring-(--azul-dim) rounded py-2">
+                <select name="" id="filtroPrecioProductos" class="styled-select w-full focus:outline-none focus:ring-2 focus:ring-(--azul-dim) rounded py-2">
                     <option value="" class="opt-plata">Seleccionar Precio</option>
                     <option value="" class="opt-azul">Mayor a Menor</option>
                     <option value="" class="opt-celeste">Menor a Mayor</option>
@@ -56,7 +55,7 @@
 
             <div class="contMedicamentos mt-6 gap-2 flex flex-col">
                 <div class="producto grid grid-cols-[6fr_2fr_2fr_2fr_1fr_1fr] items-center bg-white p-2 rounded shadow gap-1">
-                    <h3 class="text-(--azul-dim) font-semibold text-xl mb-0">Paracetamol 500mg</h3>
+                    <h3 class="text-(--azul-dim) font-semibold text-xl mb-0">Barra proteica</h3>
                     <p class="text-(--negro-suave)">$3.200</p>
                     <p>30 unidades</p>
                     <p>Sucursal Norte</p>
@@ -64,7 +63,7 @@
                     <button id="eliminarMedicamento" class="px-2 py-1 rounded bg-(--azul-dim) text-(--blanco-frio)">❌</button>
                 </div>
                 <div class="producto grid grid-cols-[6fr_2fr_2fr_2fr_1fr_1fr] items-center bg-white p-2 rounded shadow gap-1">
-                    <h3 class="text-(--azul-dim) font-semibold text-xl mb-0">Amoxidal 500mg</h3>
+                    <h3 class="text-(--azul-dim) font-semibold text-xl mb-0">Crema Corporal</h3>
                     <p class="text-(--negro-suave)">$2.200</p>
                     <p>10 unidades</p>
                     <p>Sucursal Sur</p>

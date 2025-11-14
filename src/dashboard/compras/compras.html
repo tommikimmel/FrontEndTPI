@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/src/assets/icon.ico" type="image/x-icon">
+    <title>Sistema de Farmacia - Compras</title>
+    <style>
+        :root {
+            --celeste-ice: #AEE3FF;
+            --azul-dim: #446D9E;
+            --azul-dim-hover: #3B5B8C;
+            --plata-mate: #BCC7D1;
+            --blanco-frio: #F9FBFD;
+            --blanco-sucio: #f7f7f7;
+            --negro-suave: #2E2E2E;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="compras.js"></script>
+</head>
+<body>
+    <section id="sideBar" class="w-[180px] bg-(--azul-dim) h-full fixed">
+        <header class="h-full">
+            <nav class="flex flex-col justify-between h-full py-6 pl-4">
+                <ul class="space-y-4 text-(--blanco-frio)">
+                    <li><a href="../dashboard.html" class="w-[130px] h-[40px] flex items-center pl-2 rounded hover:bg-(--blanco-frio) hover:text-(--azul-dim) border-b transition">Dashboard</a></li>
+                    <li><a href="../facturacion/facturacion.html" class="w-[130px] h-[40px] flex items-center pl-2 rounded hover:bg-(--blanco-frio) hover:text-(--azul-dim) border-b transition">Facturacion</a></li>
+                    <li><a href="../medicamentos/medicamentos.html" class="w-[130px] h-[40px] flex items-center pl-2 rounded hover:bg-(--blanco-frio) hover:text-(--azul-dim) border-b transition">Medicamentos</a></li>
+                    <li><a href="../productos/productos.html" class="w-[130px] h-[40px] flex items-center pl-2 rounded hover:bg-(--blanco-frio) hover:text-(--azul-dim) border-b transition">Productos</a></li>
+                    <li><a href="../proveedores/proveedores.html" class="w-[130px] h-[40px] flex items-center pl-2 rounded hover:bg-(--blanco-frio) hover:text-(--azul-dim) border-b transition">Proveedores</a></li>
+                    <li><a href="../compras/compras.html" class="w-[130px] h-[40px] flex items-center pl-2 rounded hover:bg-(--blanco-frio) hover:text-(--azul-dim) border-b transition">Compras</a></li>
+                </ul>
+                <ul>
+                    <li><a href="" class="bg-(--blanco-frio) text-(--negro-suave) w-[90%] h-[40px] flex items-center justify-center rounded hover:bg-(--azul-dim-hover) hover:text-(--blanco-frio) transition">Cerrar Sesion</a></li>
+                </ul>
+            </nav>
+        </header>
+    </section>
+
+    <main id="main" class="ml-[180px] px-4 pt-6">
+        <h1 class="text-(--azul-dim) font-semibold text-4xl">Compras</h1>
+        <div class="contAll bg-(--blanco-frio) shadow py-6 px-4 rounded mt-4">
+            <div class="contFiltros flex gap-2 items-center justify-between bg-white py-4 rounded px-4 shadow">
+                <select name="" id="filtroSucursalCompras" class="rounded py-2 px-3 w-full border border-(--plata-mate) focus:outline-none focus:ring-2 focus:ring-(--azul-dim)">
+                    <option value="">Seleccionar Sucursal</option>
+                </select>
+                <select name="" id="filtroProveedorCompras" class="rounded py-2 px-3 w-full border border-(--plata-mate) focus:outline-none focus:ring-2 focus:ring-(--azul-dim)">
+                    <option value="">Seleccionar Proveedor</option>
+                </select>
+                <input type="date" name="" id="fechaInicio" class="rounded py-2 px-3 w-full border border-(--plata-mate) focus:outline-none focus:ring-2 focus:ring-(--azul-dim)">
+                <input type="date" name="" id="fechaFin" class="rounded py-2 px-3 w-full border border-(--plata-mate) focus:outline-none focus:ring-2 focus:ring-(--azul-dim)">
+                <button id="agregarCompra" class="bg-(--azul-dim) text-(--blanco-frio) w-full py-2 rounded hover:bg-(--azul-dim-hover) transition font-semibold">Agregar Compra</button>
+            </div>
+
+            <div class="contCompras">
+                <!-- Las compras se cargan dinamicamente -->
+                <div class="compra grid grid-cols-[4fr_2fr_2fr_1fr_1fr] items-center bg-white px-2 py-1 rounded shadow gap-1 mt-4">
+                    <h3 class="text-(--azul-dim) font-semibold text-xl mb-0">Compra #12345</h3>
+                    <p class="text-(--negro-suave)">Proveedor XYZ</p>
+                    <p class="text-(--negro-suave)">Sucursal Centro</p>
+                    <button id="editarCompra" class="px-1 py-1 rounded bg-(--azul-dim) text-(--blanco-frio)">✏️</button>
+                    <button id="eliminarCompra" class="px-1 py-1 rounded bg-(--azul-dim) text-(--blanco-frio)">❌</button>
+                </div>
+
+                <!-- DETALLE DE LA COMPRA, SALE AL CLICKEAR EN UNA COMPRA Y SE CARGAN LOS DETALLES -->
+                <div class="detalleCompra absolute top-50 left-50 h-auto max-h-[420px] w-[340px] bg-(--blanco-frio) shadow p-4 hidden">
+                    <h2 class="text-(--azul-dim) font-semibold text-center mt-2">Detalle compra</h2>
+                    <div class="detalle grid grid-cols-[3fr_1fr_1fr_1fr_1fr] gap-2 px-4 py-1 bg-white shadow rounded mt-2">
+                        <span>Producto 1</span>
+                        <span>$1.200</span>
+                        <span>200</span>
+                        <button id="editarDetalleCompra" class="bg-(--azul-dim) rounded">✏️</button>
+                        <button id="eliminarDetalleCompra" class="bg-(--azul-dim) rounded">❌</button>
+                    </div>
+                    <div class="detalle grid grid-cols-[3fr_1fr_1fr_1fr_1fr] gap-2 px-4 py-1 bg-white shadow rounded mt-2">
+                        <span>Producto 1</span>
+                        <span>$1.200</span>
+                        <span>200</span>
+                        <button id="editarDetalleCompra" class="bg-(--azul-dim) rounded">✏️</button>
+                        <button id="eliminarDetalleCompra" class="bg-(--azul-dim) rounded">❌</button>
+                    </div>
+                    <div class="detalle grid grid-cols-[3fr_1fr_1fr_1fr_1fr] gap-2 px-4 py-1 bg-white shadow rounded mt-2">
+                        <span>Producto 1</span>
+                        <span>$1.200</span>
+                        <span>200</span>
+                        <button id="editarDetalleCompra" class="bg-(--azul-dim) rounded">✏️</button>
+                        <button id="eliminarDetalleCompra" class="bg-(--azul-dim) rounded">❌</button>
+                    </div>
+                    <footer>
+                        <button id="cerrarDetalleCompra" class="bg-(--azul-dim) text-(--blanco-frio) w-full py-2 rounded mt-4 hover:bg-(--azul-dim-hover) transition">Agregar Detalle</button>
+                    </footer>
+                </div>
+
+
+
+            </div>
+        </div>  
+    </main>
+</body>
+</html>
