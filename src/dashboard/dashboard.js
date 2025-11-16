@@ -1,16 +1,15 @@
 //Facturacion  Diaria
 const facturacionDiaria = document.getElementById('facturacionDiaria');
-const diaActual = new Date().toLocaleDateString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit' });
-const mesActual = new Date().toLocaleDateString('es-ES', { year: 'numeric', month: '2-digit' });
-const añoActual = new Date().toLocaleDateString('es-ES', { year: 'numeric' });
+const fecha = new Date();
+const diaActual = fecha.getDate();              
+const mesActual = fecha.getMonth() + 1;                
+const añoActual = fecha.getFullYear(); 
 
-fetch(`https://localhost:7013/api/Factura/obtener_ganancia?dia=14&mes=11&anio=2025`)
-	.then(response => response.json())
-	.then(data => {
-		console.log(data);
-		facturacionDiaria.textContent = `$${data.toFixed(2)}`;
-});
-
+fetch(`https://localhost:7013/api/Factura/obtener_ganancia?dia=${diaActual}&mes=${mesActual}&anio=${añoActual}`)
+  		.then(response => response.text())   // tomamos texto puro
+  		.then(data => {
+			facturacionDiaria.textContent = `$${parseFloat(data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+	    });		
 
 //Productos Top
 const contProductosTop = document.getElementById('contProductosTop');
@@ -24,10 +23,10 @@ fetch('https://localhost:7013/api/Factura/obtener_producto_top')
 		li.className = 'mb-2 shadow p-2 rounded flex justify-between bg-(--blanco-frio) text-(--negro-suave)';
 
 		li.innerHTML = `
-			<span>${producto.CodigoDeBarra}</span>
-            <span>${producto.Nombre}</span>
-            <span>${producto.CantidadVendidaTotal}</span>
-			<span class="bg-(--azul-dim) text-(--blanco-frio) w-[170px] text-center rounded">${producto.Sucursal}</span>  
+			<span>${producto.codigoDeBarra}</span>
+            <span>${producto.nombre}</span>
+            <span>${producto.cantidadVendidaTotal}</span>
+			<span class="bg-(--azul-dim) text-(--blanco-frio) w-[170px] text-center rounded">${producto.sucursal}</span>  
 		`
 		contProductosTop.appendChild(li);
 	});
@@ -43,10 +42,10 @@ fetch('https://localhost:7013/api/Factura/obtener_medicamento_top')
 		li.className = "mb-2 shadow p-2 rounded flex justify-between bg-(--blanco-frio) text-(--negro-suave)";
 
 		li.innerHTML = `
-			<span>${medicamento.CodigoDeBarra}</span>
-            <span>${medicamento.Nombre}</span>
-            <span>${medicamento.CantidadVendidaTotal}</span>
-			<span class="bg-(--azul-dim) text-(--blanco-frio) w-[170px] text-center rounded">${medicamento.Sucursal}</span>  
+			<span>${medicamento.codigoDeBarra}</span>
+            <span>${medicamento.nombre}</span>
+            <span>${medicamento.cantidadVendidaTotal}</span>
+			<span class="bg-(--azul-dim) text-(--blanco-frio) w-[170px] text-center rounded">${medicamento.sucursal}</span>  
 		`
 		contMedicamentosTop.appendChild(li);
 	})
@@ -62,8 +61,8 @@ async function cargarGraficoGanancias() {
 
 	const nombresMeses = ["N/A", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
-	const labels = data.map(x => nombresMeses[x.MES]);
-	const valores = data.map(x => x.IMPORTE);
+	const labels = data.map(x => nombresMeses[x.mes]);
+	const valores = data.map(x => x.importe);
 
 	new Chart(document.getElementById("graficoGanancias"), {
     	type: "bar",
@@ -90,8 +89,8 @@ async function cargarTortaMetodosPago() {
     const res = await fetch("https://localhost:7013/api/Factura/obtener_metodo_pago_utilizado");
     const datos = await res.json();
 
-    const labels = datos.map(x => x.METODO_PAGO);
-    const valores = datos.map(x => x.CantidadMPUsado);
+    const labels = datos.map(x => x.metodO_PAGO);
+    const valores = datos.map(x => x.cantidadMPUsado);
 
     const coloresAzules = [
         "#001F3F", "#003366", "#004C99", "#0066CC", "#0080FF",
@@ -127,8 +126,8 @@ async function cargarTortaSucursales() {
     const res = await fetch("https://localhost:7013/api/Factura/obtener_ventas_por_sucursal");
     const datos = await res.json();
 
-    const labels = datos.map(x => x.SUCURSAL);
-    const valores = datos.map(x => x.CantidadSucursal);
+    const labels = datos.map(x => x.sucursal);
+    const valores = datos.map(x => x.cantidadSucursal);
 
     const coloresAzules = [
         "#001F3F", "#003366", "#004C99", "#0066CC", "#0080FF",

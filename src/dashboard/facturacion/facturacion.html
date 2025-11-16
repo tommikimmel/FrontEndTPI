@@ -17,7 +17,8 @@
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script src="facturacion.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 <body>
     <section id="sideBar" class="w-[180px] bg-(--azul-dim) h-full fixed">
@@ -43,15 +44,15 @@
         <div class="contGanancias grid grid-cols-3 gap-4 mt-4">
             <div class="gananciaDiaria bg-(--blanco-frio) shadow py-6 px-4 hover:scale-102 transition border-(--azul-dim) border-1 rounded">
                 <h2 class="text-(--azul-dim)">Ganancia Diaria</h2>
-                <span class="font-semibold text-(--negro-suave) text-2xl">$200.120</span>
+                <span class="font-semibold text-(--negro-suave) text-2xl" id="gananciaDiaria"></span>
             </div>
             <div class="gananciaMensual bg-(--blanco-frio) shadow py-6 px-4 hover:scale-102 transition border-(--azul-dim) border-1 rounded">
                 <h2 class="text-(--azul-dim)">Ganancia Mensual</h2>
-                <span class="font-semibold text-(--negro-suave) text-2xl">$5.600.000</span>
+                <span class="font-semibold text-(--negro-suave) text-2xl" id="gananciaMensual"></span>
             </div>
             <div class="gananciaAnual bg-(--blanco-frio) shadow py-6 px-4 hover:scale-102 transition border-(--azul-dim) border-1 rounded">
                 <h2 class="text-(--azul-dim)">Ganancia Anual</h2>
-                <span class="font-semibold text-(--negro-suave) text-2xl">$67.200.000</span>
+                <span class="font-semibold text-(--negro-suave) text-2xl" id="gananciaAnual"></span>
             </div>
         </div>
         <div id="graficoBarras" class="mt-6">
@@ -61,10 +62,13 @@
                 <option value="2024">2024</option>
                 <option value="2023">2023</option>
             </select>
-            <canvas id="barChart" class="mt-6 bg-(--blanco-frio) p-4 rounded shadow w-full max-h-[400px]">
+            <canvas id="graficoFacturacion" class="mt-6 bg-(--blanco-frio) p-4 rounded shadow w-full max-h-[400px]">
                 
             </canvas>
         </div>
     </main>
+
+    <script src="facturacion.js"></script>
+
 </body>
 </html>

@@ -17,7 +17,6 @@
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script src="proveedores.js"></script>
 </head>
 <body>
     <section id="sideBar" class="w-[180px] bg-(--azul-dim) h-full fixed">
@@ -40,56 +39,11 @@
 
     <main id="main" class="ml-[180px] px-4 pt-6">
         <h1 class="text-(--azul-dim) font-semibold text-4xl">Proveedores</h1>
-        <div class="contProveedores grid grid-cols-4 gap-4 mt-4">
-            <div class="proveedor bg-(--blanco-frio) p-4 rounded shadow flex flex-col gap-2 h-[280px]">
-                <h1 class="text-4xl text-center">👥</h1>
-                <h2 class="text-(--azul-dim) font-semibold text-center">Laboratorios Argentinos S.A.</h2>
-                <h3 class="text-(--negro-suave) text-center">30-12345678-1</h3>
-                <p class="text-center opacity-60">Av. Siempre Viva 100</p>
-                <p class="text-center opacity-60">+54 11 4000-0001</p>
-                <p class="text-center opacity-60">ventas@labarg.com</p>
-                <div class="flex gap-4 mt-2 items-center justify-center">
-                    <button id="editarProveedor" class="bg-(--azul-dim) text-(--blanco-frio) w-full h-full rounded">Editar</button>
-                    <button id="eliminarProveedor" class="bg-(--azul-dim) text-(--blanco-frio) w-full h-full rounded">Eliminar</button>
-                </div>
-            </div>
-            <div class="proveedor bg-(--blanco-frio) p-4 rounded shadow flex flex-col gap-2 h-[280px]">
-                <h1 class="text-4xl text-center">👥</h1>
-                <h2 class="text-(--azul-dim) font-semibold text-center">Laboratorios Argentinos S.A.</h2>
-                <h3 class="text-(--negro-suave) text-center">30-12345678-1</h3>
-                <p class="text-center opacity-60">Av. Siempre Viva 100</p>
-                <p class="text-center opacity-60">+54 11 4000-0001</p>
-                <p class="text-center opacity-60">ventas@labarg.com</p>
-                <div class="flex gap-4 mt-2 items-center justify-center">
-                    <button id="editarProveedor" class="bg-(--azul-dim) text-(--blanco-frio) w-full h-full rounded">Editar</button>
-                    <button id="eliminarProveedor" class="bg-(--azul-dim) text-(--blanco-frio) w-full h-full rounded">Eliminar</button>
-                </div>
-            </div>
-            <div class="proveedor bg-(--blanco-frio) p-4 rounded shadow flex flex-col gap-2 h-[280px]">
-                <h1 class="text-4xl text-center">👥</h1>
-                <h2 class="text-(--azul-dim) font-semibold text-center">Laboratorios Argentinos S.A.</h2>
-                <h3 class="text-(--negro-suave) text-center">30-12345678-1</h3>
-                <p class="text-center opacity-60">Av. Siempre Viva 100</p>
-                <p class="text-center opacity-60">+54 11 4000-0001</p>
-                <p class="text-center opacity-60">ventas@labarg.com</p>
-                <div class="flex gap-4 mt-2 items-center justify-center">
-                    <button id="editarProveedor" class="bg-(--azul-dim) text-(--blanco-frio) w-full h-full rounded">Editar</button>
-                    <button id="eliminarProveedor" class="bg-(--azul-dim) text-(--blanco-frio) w-full h-full rounded">Eliminar</button>
-                </div>
-            </div>
-            <div class="proveedor bg-(--blanco-frio) p-4 rounded shadow flex flex-col gap-2 h-[280px]">
-                <h1 class="text-4xl text-center">👥</h1>
-                <h2 class="text-(--azul-dim) font-semibold text-center">Laboratorios Argentinos S.A.</h2>
-                <h3 class="text-(--negro-suave) text-center">30-12345678-1</h3>
-                <p class="text-center opacity-60">Av. Siempre Viva 100</p>
-                <p class="text-center opacity-60">+54 11 4000-0001</p>
-                <p class="text-center opacity-60">ventas@labarg.com</p>
-                <div class="flex gap-4 mt-2 items-center justify-center">
-                    <button id="editarProveedor" class="bg-(--azul-dim) text-(--blanco-frio) w-full h-full rounded">Editar</button>
-                    <button id="eliminarProveedor" class="bg-(--azul-dim) text-(--blanco-frio) w-full h-full rounded">Eliminar</button>
-                </div>
-            </div>
+        <div class="contProveedores grid grid-cols-4 gap-4 mt-4" id="contProveedores">
+            <!-- Se cargan proveedores dinámicamente -->
         </div>
     </main>
+
+    <script src="proveedores.js"></script>
 </body>
 </html>

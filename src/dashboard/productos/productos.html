@@ -17,7 +17,6 @@
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script src="medicamentos.js"></script>
 </head>
 <body>
     <section id="sideBar" class="w-[180px] bg-(--azul-dim) h-full fixed">
@@ -42,18 +41,18 @@
         <h1 class="text-(--azul-dim) font-semibold text-4xl">Productos</h1>
         <div class="contAll bg-(--blanco-frio) shadow py-6 px-4 rounded mt-4">
             <div class="contFiltros flex gap-4 items-center justify-between bg-white py-4 rounded px-4">
-                <input type="text" placeholder="Buscar productos..." class="px-2 py-1 rounded w-full focus:outline-none focus:ring-2 focus:ring-(--azul-dim)">
+                <input id="filtroNombreProducto" type="text" placeholder="Buscar productos..." class="px-2 py-1 rounded w-full focus:outline-none focus:ring-2 focus:ring-(--azul-dim)">
                 <select name="" id="filtroSucursalProductos" class="styled-select w-full focus:outline-none focus:ring-2 focus:ring-(--azul-dim) rounded py-2">
                     <option value="">Seleccionar Sucursal</option>
                 </select>
                 <select name="" id="filtroPrecioProductos" class="styled-select w-full focus:outline-none focus:ring-2 focus:ring-(--azul-dim) rounded py-2">
                     <option value="" class="opt-plata">Seleccionar Precio</option>
-                    <option value="" class="opt-azul">Mayor a Menor</option>
-                    <option value="" class="opt-celeste">Menor a Mayor</option>
+                    <option value="A" class="opt-azul">Mayor a Menor</option>
+                    <option value="D" class="opt-celeste">Menor a Mayor</option>
                 </select>
             </div>
 
-            <div class="contMedicamentos mt-6 gap-2 flex flex-col">
+            <div class="mt-6 gap-2 flex flex-col" id="contProductos">
                 <div class="producto grid grid-cols-[6fr_2fr_2fr_2fr_1fr_1fr] items-center bg-white p-2 rounded shadow gap-1">
                     <h3 class="text-(--azul-dim) font-semibold text-xl mb-0">Barra proteica</h3>
                     <p class="text-(--negro-suave)">$3.200</p>
@@ -73,5 +72,7 @@
             </div>
         </div>
     </section>
+
+    <script src="productos.js"></script>
 </body>
 </html>
