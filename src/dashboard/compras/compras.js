@@ -1,3 +1,31 @@
+//Cargar sucursales
+async function cargarSucursales() {
+    fetch('https://localhost:7013/api/Sucursal/sucursales')
+    .then(res => res.json())
+    .then(data => {
+        const filtroSucursalProductos = document.getElementById('filtroSucursalCompras');
+        data.forEach(sucursal => {
+            const option = document.createElement('option');
+            option.value = sucursal.descripcion;
+            option.textContent = sucursal.descripcion;
+            filtroSucursalProductos.appendChild(option);
+        });
+    });
+}
+
+async function cargarProveedores() {
+    fetch('https://localhost:7013/api/Proveedor/obtener_proveedores')
+    .then(res => res.json())
+    .then(data => {
+        const filtroProveedorCompras = document.getElementById('filtroProveedorCompras');
+        data.forEach(proveedor => {
+            const option = document.createElement('option');
+            option.value = proveedor.razonSocial;
+            option.textContent = proveedor.razonSocial;
+            filtroProveedorCompras.appendChild(option);
+        });
+    });
+}
 //Cargar compras
 const contCompras = document.getElementById('contCompras');
 async function cargarCompras() {
@@ -16,12 +44,12 @@ async function cargarCompras() {
                 <button id="eliminarCompra" class="px-1 py-1 rounded bg-(--azul-dim) text-(--blanco-frio)">❌</button>
             `
             div.addEventListener('click', () => {
-                // Aquí puedes agregar la lógica para mostrar el detalle de la compra
-                
-                
+                // Aquí puedes agregar la lógica para mostrar el detalle de la compra               
             });
             contCompras.appendChild(div);   
         });
     })
 }
+cargarProveedores()
+cargarSucursales()
 cargarCompras()
