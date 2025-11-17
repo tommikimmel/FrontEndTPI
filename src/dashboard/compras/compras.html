@@ -17,7 +17,6 @@
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script src="compras.js"></script>
 </head>
 <body>
     <section id="sideBar" class="w-[180px] bg-(--azul-dim) h-full fixed">
@@ -53,16 +52,8 @@
                 <button id="agregarCompra" class="bg-(--azul-dim) text-(--blanco-frio) w-full py-2 rounded hover:bg-(--azul-dim-hover) transition font-semibold">Agregar Compra</button>
             </div>
 
-            <div class="contCompras">
+            <div class="contCompras" id="contCompras">
                 <!-- Las compras se cargan dinamicamente -->
-                <div class="compra grid grid-cols-[4fr_2fr_2fr_1fr_1fr] items-center bg-white px-2 py-1 rounded shadow gap-1 mt-4">
-                    <h3 class="text-(--azul-dim) font-semibold text-xl mb-0">Compra #12345</h3>
-                    <p class="text-(--negro-suave)">Proveedor XYZ</p>
-                    <p class="text-(--negro-suave)">Sucursal Centro</p>
-                    <button id="editarCompra" class="px-1 py-1 rounded bg-(--azul-dim) text-(--blanco-frio)">✏️</button>
-                    <button id="eliminarCompra" class="px-1 py-1 rounded bg-(--azul-dim) text-(--blanco-frio)">❌</button>
-                </div>
-
                 <!-- DETALLE DE LA COMPRA, SALE AL CLICKEAR EN UNA COMPRA Y SE CARGAN LOS DETALLES -->
                 <div class="detalleCompra absolute top-50 left-50 h-auto max-h-[420px] w-[340px] bg-(--blanco-frio) shadow p-4 hidden">
                     <h2 class="text-(--azul-dim) font-semibold text-center mt-2">Detalle compra</h2>
@@ -91,11 +82,12 @@
                         <button id="cerrarDetalleCompra" class="bg-(--azul-dim) text-(--blanco-frio) w-full py-2 rounded mt-4 hover:bg-(--azul-dim-hover) transition">Agregar Detalle</button>
                     </footer>
                 </div>
-
-
-
             </div>
         </div>  
     </main>
+
+
+    <script src="compras.js"></script>
+
 </body>
 </html>
