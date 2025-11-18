@@ -1,66 +1,3 @@
-// ===== ELIMINAR PROVEEDOR =====
-window.eliminarProveedor = async (cuit) => {
-    const cuitLimpio = limpiarCUIT(cuit);
-    
-    console.log('=== INTENTANDO ELIMINAR ===');
-    console.log('CUIT recibido:', cuit);
-    console.log('CUIT limpio:', cuitLimpio);
-    console.log('Longitud CUIT:', cuitLimpio.length);
-    console.log('Es solo números?', /^\d+$/.test(cuitLimpio));
-    
-    // Buscar el proveedor para mostrar su nombre en la confirmación
-    const proveedor = todosProveedores.find(p => limpiarCUIT(p.cuit) === cuitLimpio);
-    console.log('Proveedor encontrado:', proveedor);
-    
-    const nombreProveedor = proveedor ? proveedor.razonSocial : `CUIT ${formatearCUIT(cuitLimpio)}`;
-    
-    if (!confirm(`¿Está seguro de eliminar el proveedor "${nombreProveedor}"?\n\nEsta acción no se puede deshacer.`)) {
-        console.log('Usuario canceló la eliminación');
-        return;
-    }
-
-    try {
-        // Mostrar loading en el botón
-        const botonEliminar = event.target.closest('button');
-        const textoOriginal = botonEliminar.innerHTML;
-        botonEliminar.disabled = true;
-        botonEliminar.innerHTML = '<div class="spinner mx-auto" style="width: 20px; height: 20px; border-width: 2px;"></div>';
-
-        const url = `${API_BASE}/Proveedor/borrar_proveedor?cuit=${cuitLimpio}`;
-        console.log('URL DELETE completa:', url);
-
-        // DELETE simple con query parameter
-        const response = await fetch(url, {
-            method: 'DELETE'
-        });
-
-        console.log('Status de respuesta:', response.status);
-        console.log('OK?:', response.ok);
-        
-        // Intentar leer la respuesta
-        const contentType = response.headers.get('content-type');
-        console.log('Content-Type de respuesta:', contentType);
-        
-        let responseData;
-        try {
-            if (contentType && contentType.includes('application/json')) {
-                responseData = await response.json();
-            } else {
-                responseData = await response.text();
-            }
-            console.log('Respuesta del servidor:', responseData);
-        } catch (e) {
-            console.log('No se pudo leer el body de la respuesta:', e);
-        }
-        
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}`);
-        }
-    } catch (error) {
-        alert(`Error al eliminar proveedor:\n${error.message}`);
-        console.error('Error completo:', error);
-    }
-};
 // ===== CONFIGURACIÓN =====
 const API_BASE = 'https://localhost:7013/api';
 
@@ -140,13 +77,14 @@ window.abrirModalEditar = (proveedor) => {
     
     // Llenar campos con datos actuales
     elementos.razonSocial.value = proveedor.razonSocial || '';
-    elementos.cuit.value = limpiarCUIT(proveedor.cuit) || '';
+    elementos.cuit.value = proveedor.cuit || '';
     elementos.direccion.value = proveedor.direccionProveedor || '';
     elementos.telefono.value = proveedor.telefonoProveedor || '';
     elementos.email.value = proveedor.emailProveedor || '';
     
-    // NO deshabilitar CUIT - necesitamos enviarlo
-    elementos.cuit.readOnly = true; // Solo hacerlo de solo lectura visualmente
+    elementos.form.dataset.proveedorId = proveedor.proveedorId || 0;
+    
+    elementos.cuit.readOnly = true; 
     elementos.cuit.classList.add('bg-gray-100', 'cursor-not-allowed');
     
     elementos.mensajeForm.classList.add('hidden');
@@ -158,6 +96,7 @@ window.cerrarModal = () => {
     elementos.form.reset();
     elementos.cuit.readOnly = false;
     elementos.cuit.classList.remove('bg-gray-100', 'cursor-not-allowed');
+    delete elementos.form.dataset.proveedorId;
     proveedorEditando = null;
 };
 
@@ -200,10 +139,7 @@ const limpiarCUIT = (cuit) => {
 // ===== FORMATEAR CUIT =====
 const formatearCUIT = (cuit) => {
     if (!cuit) return 'Sin CUIT';
-    const cuitLimpio = limpiarCUIT(cuit);
-    if (cuitLimpio.length === 11) {
-        return `${cuitLimpio.slice(0, 2)}-${cuitLimpio.slice(2, 10)}-${cuitLimpio.slice(10)}`;
-    }
+    // Ya no formateamos el CUIT, lo devolvemos tal cual
     return cuit;
 };
 
@@ -221,7 +157,6 @@ const renderizarProveedores = (proveedores) => {
     elementos.emptyState.classList.add('hidden');
     
     elementos.contenedor.innerHTML = proveedores.map(proveedor => {
-        const cuitLimpio = limpiarCUIT(proveedor.cuit);
         return `
         <div class="proveedor-card bg-white rounded-xl shadow-md p-6 border border-gray-200">
             <div class="flex flex-col h-full">
@@ -236,7 +171,7 @@ const renderizarProveedores = (proveedores) => {
                 <div class="flex-1 space-y-3 mb-4">
                     <div class="text-center">
                         <h3 class="text-lg font-bold text-gray-800 mb-1 line-clamp-2">${proveedor.razonSocial || 'Sin nombre'}</h3>
-                        <p class="text-sm text-gray-600 font-mono">${formatearCUIT(proveedor.cuit)}</p>
+                        <p class="text-sm text-gray-600 font-mono">${proveedor.cuit || 'Sin CUIT'}</p>
                     </div>
 
                     <div class="space-y-2 text-sm">
@@ -268,7 +203,7 @@ const renderizarProveedores = (proveedores) => {
                         <span>Editar</span>
                     </button>
                     <button 
-                        onclick="eliminarProveedor('${cuitLimpio}')" 
+                        onclick="eliminarProveedor('${proveedor.cuit}')" 
                         class="flex-1 bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition-all font-semibold flex items-center justify-center gap-2"
                         title="Eliminar"
                     >
@@ -292,7 +227,7 @@ elementos.buscar.addEventListener('input', (e) => {
 
     const filtrados = todosProveedores.filter(proveedor => {
         const razonSocial = (proveedor.razonSocial || '').toLowerCase();
-        const cuit = limpiarCUIT(proveedor.cuit);
+        const cuit = (proveedor.cuit || '').toLowerCase();
         return razonSocial.includes(termino) || cuit.includes(termino);
     });
 
@@ -306,11 +241,9 @@ window.editarProveedor = (proveedor) => {
 
 // ===== ELIMINAR PROVEEDOR =====
 window.eliminarProveedor = async (cuit) => {
-    const cuitLimpio = limpiarCUIT(cuit);
-    
     // Buscar el proveedor para mostrar su nombre en la confirmación
-    const proveedor = todosProveedores.find(p => limpiarCUIT(p.cuit) === cuitLimpio);
-    const nombreProveedor = proveedor ? proveedor.razonSocial : `CUIT ${formatearCUIT(cuitLimpio)}`;
+    const proveedor = todosProveedores.find(p => p.cuit === cuit);
+    const nombreProveedor = proveedor ? proveedor.razonSocial : `CUIT ${cuit}`;
     
     if (!confirm(`¿Está seguro de eliminar el proveedor "${nombreProveedor}"?\n\nEsta acción no se puede deshacer.`)) {
         return;
@@ -323,11 +256,12 @@ window.eliminarProveedor = async (cuit) => {
         botonEliminar.disabled = true;
         botonEliminar.innerHTML = '<div class="spinner mx-auto" style="width: 20px; height: 20px; border-width: 2px;"></div>';
 
-        console.log('Eliminando proveedor con CUIT:', cuitLimpio);
-        console.log('URL:', `${API_BASE}/Proveedor/borrar_proveedor?cuit=${cuitLimpio}`);
+        console.log('Eliminando proveedor con CUIT:', cuit);
+        const url = `${API_BASE}/Proveedor/borrar_proveedor?cuit=${encodeURIComponent(cuit)}`;
+        console.log('URL DELETE:', url);
 
         // DELETE simple con query parameter
-        const response = await fetch(`${API_BASE}/Proveedor/borrar_proveedor?cuit=${cuitLimpio}`, {
+        const response = await fetch(url, {
             method: 'DELETE'
         });
 
@@ -357,7 +291,7 @@ window.eliminarProveedor = async (cuit) => {
         console.error('Error completo:', error);
         
         // Restaurar botón si hay error
-        const botonEliminar = document.querySelector(`button[onclick*="${cuitLimpio}"]`);
+        const botonEliminar = document.querySelector(`button[onclick*="${cuit.replace(/'/g, "\\'")}"]`);
         if (botonEliminar) {
             botonEliminar.disabled = false;
             botonEliminar.innerHTML = '<span>🗑️</span><span>Eliminar</span>';
@@ -369,74 +303,65 @@ window.eliminarProveedor = async (cuit) => {
 elementos.form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const cuitLimpio = limpiarCUIT(elementos.cuit.value);
+    const cuitValue = elementos.cuit.value.trim();
+    const proveedorId = parseInt(elementos.form.dataset.proveedorId) || 0;
 
-    // Objeto con estructura EXACTA del API
+    // Objeto con estructura EXACTA del API según documentación
     const proveedor = {
-        proveedorId: 0,
+        proveedorId: proveedorId,
         razonSocial: elementos.razonSocial.value.trim(),
-        cuit: cuitLimpio,
+        cuit: cuitValue,
         direccionProveedor: elementos.direccion.value.trim(),
         telefonoProveedor: elementos.telefono.value.trim(),
         emailProveedor: elementos.email.value.trim(),
         activo: true
     };
 
-    // Validar CUIT (11 dígitos sin guiones)
-    if (!/^\d{11}$/.test(proveedor.cuit)) {
-        mostrarMensaje('El CUIT debe tener exactamente 11 dígitos', 'error');
+    // Validar CUIT no vacío
+    if (!proveedor.cuit) {
+        mostrarMensaje('El CUIT es requerido', 'error');
         return;
     }
 
-    // Log para debug
     console.log('Datos a enviar:', JSON.stringify(proveedor, null, 2));
 
     try {
-        // Deshabilitar botón submit
         const btnSubmit = elementos.form.querySelector('button[type="submit"]');
         const textoOriginal = btnSubmit.textContent;
         btnSubmit.disabled = true;
         btnSubmit.innerHTML = '<div class="spinner mx-auto" style="width: 20px; height: 20px; border-width: 2px;"></div>';
 
         if (proveedorEditando) {
-            // ACTUALIZAR (PUT) - actualizar_proveedor con query parameter
-            console.log('Actualizando proveedor con CUIT:', proveedor.cuit);
-            const url = `${API_BASE}/Proveedor/actualizar_proveedor?cuit=${cuitLimpio}`;
-            console.log('URL:', url);
-            console.log('Payload:', JSON.stringify(proveedor, null, 2));
+            // ACTUALIZAR (PUT) con query parameter cuit
+            console.log('=== ACTUALIZANDO PROVEEDOR ===');
+            console.log('proveedorId:', proveedorId);
+            console.log('CUIT:', proveedor.cuit);
+            console.log('Payload completo:', JSON.stringify(proveedor, null, 2));
             
-            const resultado = await obtenerDatos(
-                url,
-                {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(proveedor)
-                }
-            );
+            const url = `${API_BASE}/Proveedor/actualizar_proveedor?cuit=${encodeURIComponent(proveedor.cuit)}`;
+            console.log('URL PUT:', url);
+            
+            const resultado = await obtenerDatos(url, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(proveedor)
+            });
             console.log('Respuesta del servidor:', resultado);
             mostrarMensaje('✓ Proveedor actualizado correctamente', 'success');
         } else {
-            // INSERTAR (POST) - insert_proveedor
+            // INSERTAR (POST)
             console.log('Insertando nuevo proveedor');
-            const resultado = await obtenerDatos(
-                `${API_BASE}/Proveedor/insert_proveedor`,
-                {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(proveedor)
-                }
-            );
-            console.log('Respuesta del servidor:', resultado);
+            const resultado = await obtenerDatos(`${API_BASE}/Proveedor/insert_proveedor`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(proveedor)
+            });
+            console.log('Respuesta:', resultado);
             mostrarMensaje('✓ Proveedor agregado correctamente', 'success');
         }
 
-        // Recargar lista
         await cargarProveedores();
-        
-        // Cerrar modal después de 1.5 segundos
-        setTimeout(() => {
-            cerrarModal();
-        }, 1500);
+        setTimeout(() => cerrarModal(), 1500);
 
     } catch (error) {
         console.error('Error completo al guardar:', error);

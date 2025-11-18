@@ -196,6 +196,24 @@
                     </div>
                 </div>
                 
+                <!-- Sección de Detalles para Editar (solo lectura) -->
+                <div id="seccionDetallesEditar" class="hidden col-span-2 mt-4 p-4 bg-green-50 rounded-lg border-2 border-green-200">
+                    <h3 class="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
+                        <span>📋</span>
+                        <span>Detalles de la Compra</span>
+                        <span class="text-sm font-normal text-gray-600">(Solo lectura)</span>
+                    </h3>
+                    
+                    <!-- Lista de detalles existentes -->
+                    <div id="listaDetallesEditar" class="space-y-2 max-h-60 overflow-y-auto">
+                        <p class="text-center text-gray-500 py-4 text-sm">Cargando detalles...</p>
+                    </div>
+                    
+                    <div class="mt-3 p-3 bg-blue-100 border border-blue-300 rounded-lg text-sm text-blue-800">
+                        <strong>Nota:</strong> Para editar los detalles individuales, use el modal "Ver Detalles" desde la lista de compras.
+                    </div>
+                </div>
+                
                 <div id="mensajeFormCompra" class="hidden p-4 rounded-lg"></div>
                 <div class="flex gap-4">
                     <button type="submit" class="flex-1 bg-[#446D9E] text-white px-6 py-3 rounded-lg hover:bg-[#3B5B8C] transition font-semibold">Guardar</button>
