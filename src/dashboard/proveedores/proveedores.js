@@ -1,3 +1,66 @@
+// ===== ELIMINAR PROVEEDOR =====
+window.eliminarProveedor = async (cuit) => {
+    const cuitLimpio = limpiarCUIT(cuit);
+    
+    console.log('=== INTENTANDO ELIMINAR ===');
+    console.log('CUIT recibido:', cuit);
+    console.log('CUIT limpio:', cuitLimpio);
+    console.log('Longitud CUIT:', cuitLimpio.length);
+    console.log('Es solo números?', /^\d+$/.test(cuitLimpio));
+    
+    // Buscar el proveedor para mostrar su nombre en la confirmación
+    const proveedor = todosProveedores.find(p => limpiarCUIT(p.cuit) === cuitLimpio);
+    console.log('Proveedor encontrado:', proveedor);
+    
+    const nombreProveedor = proveedor ? proveedor.razonSocial : `CUIT ${formatearCUIT(cuitLimpio)}`;
+    
+    if (!confirm(`¿Está seguro de eliminar el proveedor "${nombreProveedor}"?\n\nEsta acción no se puede deshacer.`)) {
+        console.log('Usuario canceló la eliminación');
+        return;
+    }
+
+    try {
+        // Mostrar loading en el botón
+        const botonEliminar = event.target.closest('button');
+        const textoOriginal = botonEliminar.innerHTML;
+        botonEliminar.disabled = true;
+        botonEliminar.innerHTML = '<div class="spinner mx-auto" style="width: 20px; height: 20px; border-width: 2px;"></div>';
+
+        const url = `${API_BASE}/Proveedor/borrar_proveedor?cuit=${cuitLimpio}`;
+        console.log('URL DELETE completa:', url);
+
+        // DELETE simple con query parameter
+        const response = await fetch(url, {
+            method: 'DELETE'
+        });
+
+        console.log('Status de respuesta:', response.status);
+        console.log('OK?:', response.ok);
+        
+        // Intentar leer la respuesta
+        const contentType = response.headers.get('content-type');
+        console.log('Content-Type de respuesta:', contentType);
+        
+        let responseData;
+        try {
+            if (contentType && contentType.includes('application/json')) {
+                responseData = await response.json();
+            } else {
+                responseData = await response.text();
+            }
+            console.log('Respuesta del servidor:', responseData);
+        } catch (e) {
+            console.log('No se pudo leer el body de la respuesta:', e);
+        }
+        
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+    } catch (error) {
+        alert(`Error al eliminar proveedor:\n${error.message}`);
+        console.error('Error completo:', error);
+    }
+};
 // ===== CONFIGURACIÓN =====
 const API_BASE = 'https://localhost:7013/api';
 
@@ -66,7 +129,8 @@ window.abrirModalAgregar = () => {
     elementos.modalTitulo.textContent = 'Agregar Proveedor';
     elementos.form.reset();
     elementos.mensajeForm.classList.add('hidden');
-    elementos.cuit.disabled = false; // Habilitar CUIT para nuevo proveedor
+    elementos.cuit.readOnly = false;
+    elementos.cuit.classList.remove('bg-gray-100', 'cursor-not-allowed');
     elementos.modal.classList.add('show');
 };
 
@@ -81,7 +145,10 @@ window.abrirModalEditar = (proveedor) => {
     elementos.telefono.value = proveedor.telefonoProveedor || '';
     elementos.email.value = proveedor.emailProveedor || '';
     
-    elementos.cuit.disabled = true; // Deshabilitar CUIT al editar (no se puede cambiar)
+    // NO deshabilitar CUIT - necesitamos enviarlo
+    elementos.cuit.readOnly = true; // Solo hacerlo de solo lectura visualmente
+    elementos.cuit.classList.add('bg-gray-100', 'cursor-not-allowed');
+    
     elementos.mensajeForm.classList.add('hidden');
     elementos.modal.classList.add('show');
 };
@@ -89,7 +156,8 @@ window.abrirModalEditar = (proveedor) => {
 window.cerrarModal = () => {
     elementos.modal.classList.remove('show');
     elementos.form.reset();
-    elementos.cuit.disabled = false;
+    elementos.cuit.readOnly = false;
+    elementos.cuit.classList.remove('bg-gray-100', 'cursor-not-allowed');
     proveedorEditando = null;
 };
 
@@ -305,6 +373,7 @@ elementos.form.addEventListener('submit', async (e) => {
 
     // Objeto con estructura EXACTA del API
     const proveedor = {
+        proveedorId: 0,
         razonSocial: elementos.razonSocial.value.trim(),
         cuit: cuitLimpio,
         direccionProveedor: elementos.direccion.value.trim(),
@@ -330,15 +399,16 @@ elementos.form.addEventListener('submit', async (e) => {
         btnSubmit.innerHTML = '<div class="spinner mx-auto" style="width: 20px; height: 20px; border-width: 2px;"></div>';
 
         if (proveedorEditando) {
-            // ACTUALIZAR (POST) - actualizar_proveedor con query parameter
+            // ACTUALIZAR (PUT) - actualizar_proveedor con query parameter
             console.log('Actualizando proveedor con CUIT:', proveedor.cuit);
             const url = `${API_BASE}/Proveedor/actualizar_proveedor?cuit=${cuitLimpio}`;
             console.log('URL:', url);
+            console.log('Payload:', JSON.stringify(proveedor, null, 2));
             
             const resultado = await obtenerDatos(
                 url,
                 {
-                    method: 'POST',
+                    method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(proveedor)
                 }
@@ -346,12 +416,12 @@ elementos.form.addEventListener('submit', async (e) => {
             console.log('Respuesta del servidor:', resultado);
             mostrarMensaje('✓ Proveedor actualizado correctamente', 'success');
         } else {
-            // INSERTAR (PUT) - insert_proveedor
+            // INSERTAR (POST) - insert_proveedor
             console.log('Insertando nuevo proveedor');
             const resultado = await obtenerDatos(
                 `${API_BASE}/Proveedor/insert_proveedor`,
                 {
-                    method: 'PUT',
+                    method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(proveedor)
                 }

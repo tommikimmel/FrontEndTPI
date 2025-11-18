@@ -114,7 +114,7 @@
 
     <!-- Modal Compra -->
     <div id="modalCompra" class="modal">
-        <div class="bg-white rounded-xl shadow-2xl p-8 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+        <div class="bg-white rounded-xl shadow-2xl p-8 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
             <div class="flex items-center justify-between mb-6">
                 <h2 id="modalTituloCompra" class="text-2xl font-bold text-gray-800">Nueva Compra</h2>
                 <button onclick="cerrarModalCompra()" class="text-gray-400 hover:text-gray-600 text-3xl">×</button>
@@ -138,6 +138,64 @@
                         <option value="">Seleccionar</option>
                     </select>
                 </div>
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">Empleado *</label>
+                    <select id="empleadoCompra" required class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#446D9E]">
+                        <option value="">Seleccionar</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">Repartidor</label>
+                    <select id="repartidorCompra" class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#446D9E]">
+                        <option value="">Seleccionar (Opcional)</option>
+                    </select>
+                </div>
+                
+                <!-- Sección de Detalles Temporales (solo para crear) -->
+                <div id="seccionDetallesTemp" class="hidden col-span-2 mt-4 p-4 bg-blue-50 rounded-lg border-2 border-blue-200">
+                    <h3 class="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
+                        <span>📋</span>
+                        <span>Detalles de la Compra</span>
+                        <span class="text-sm font-normal text-red-600">(Requerido: mínimo 1)</span>
+                    </h3>
+                    
+                    <!-- Formulario para agregar detalle -->
+                    <div class="bg-white p-4 rounded-lg mb-3 border">
+                        <div class="grid grid-cols-2 gap-3 mb-3">
+                            <div>
+                                <label class="block text-gray-700 text-sm font-medium mb-1">Tipo *</label>
+                                <select id="tipoDetalleTemp" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#446D9E] text-sm">
+                                    <option value="">Seleccionar</option>
+                                    <option value="medicamento">💊 Medicamento</option>
+                                    <option value="producto">🛍️ Producto</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 text-sm font-medium mb-1">Código de Barra *</label>
+                                <input type="text" id="codigoBarraTemp" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#446D9E] text-sm">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-gray-700 text-sm font-medium mb-1">Cantidad *</label>
+                                <input type="number" id="cantidadTemp" min="1" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#446D9E] text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 text-sm font-medium mb-1">Lote ID</label>
+                                <input type="number" id="loteTemp" min="0" value="0" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#446D9E] text-sm">
+                            </div>
+                        </div>
+                        <button type="button" onclick="agregarDetalleTemp()" class="mt-3 w-full bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition font-semibold text-sm">
+                            ➕ Agregar Detalle
+                        </button>
+                    </div>
+                    
+                    <!-- Lista de detalles agregados -->
+                    <div id="listaDetallesTemp" class="space-y-2 max-h-60 overflow-y-auto">
+                        <p class="text-center text-gray-500 py-4 text-sm">No hay detalles agregados. Debe agregar al menos uno para crear la compra.</p>
+                    </div>
+                </div>
+                
                 <div id="mensajeFormCompra" class="hidden p-4 rounded-lg"></div>
                 <div class="flex gap-4">
                     <button type="submit" class="flex-1 bg-[#446D9E] text-white px-6 py-3 rounded-lg hover:bg-[#3B5B8C] transition font-semibold">Guardar</button>
@@ -186,6 +244,10 @@
                 <div>
                     <label class="block text-gray-700 font-medium mb-2">Cantidad *</label>
                     <input type="number" id="cantidadDetalle" min="1" required class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#446D9E]">
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">Lote ID</label>
+                    <input type="number" id="loteDetalle" min="0" class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#446D9E]" placeholder="0 si no aplica">
                 </div>
                 <div id="mensajeFormDetalle" class="hidden p-4 rounded-lg"></div>
                 <div class="flex gap-4">
