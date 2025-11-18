@@ -1,158 +1,288 @@
-//Facturacion  Diaria
-const facturacionDiaria = document.getElementById('facturacionDiaria');
-const fecha = new Date();
-const diaActual = fecha.getDate();              
-const mesActual = fecha.getMonth() + 1;                
-const añoActual = fecha.getFullYear(); 
+// ===== CONFIGURACIÓN =====
+const API_BASE = 'https://localhost:7013/api';
+const MESES = ["", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
-fetch(`https://localhost:7013/api/Factura/obtener_ganancia?dia=${diaActual}&mes=${mesActual}&anio=${añoActual}`)
-  		.then(response => response.text())   // tomamos texto puro
-  		.then(data => {
-			facturacionDiaria.textContent = `$${parseFloat(data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-	    });		
+// Formato de moneda argentino
+const formatearMoneda = (valor) => {
+    return new Intl.NumberFormat('es-AR', {
+        style: 'currency',
+        currency: 'ARS',
+        minimumFractionDigits: 2
+    }).format(valor);
+};
 
-//Productos Top
-const contProductosTop = document.getElementById('contProductosTop');
-fetch('https://localhost:7013/api/Factura/obtener_producto_top')
-.then(response => response.json())
-.then(data => {
-	
+// ===== MANEJO DE ERRORES =====
+const manejarError = (error, contexto) => {
+    console.error(`Error en ${contexto}:`, error);
+    return null;
+};
 
-	data.forEach(producto => {
-		const li = document.createElement('li');
-		li.className = 'mb-2 shadow p-2 rounded flex justify-between bg-(--blanco-frio) text-(--negro-suave)';
+// ===== UTILIDAD FETCH CON MANEJO DE ERRORES =====
+const obtenerDatos = async (url, contexto, esTexto = false) => {
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return esTexto ? await response.text() : await response.json();
+    } catch (error) {
+        manejarError(error, contexto);
+        return null;
+    }
+};
 
-		li.innerHTML = `
-			<span>${producto.codigoDeBarra}</span>
-            <span>${producto.nombre}</span>
-            <span>${producto.cantidadVendidaTotal}</span>
-			<span class="bg-(--azul-dim) text-(--blanco-frio) w-[170px] text-center rounded">${producto.sucursal}</span>  
-		`
-		contProductosTop.appendChild(li);
-	});
-});
+// ===== FACTURACIÓN DIARIA =====
+const cargarFacturacionDiaria = async () => {
+    const fecha = new Date();
+    const dia = fecha.getDate();
+    const mes = fecha.getMonth() + 1;
+    const anio = fecha.getFullYear();
 
-//Medicamentos Top
-const contMedicamentosTop = document.getElementById('contMedicamentosTop');
-fetch('https://localhost:7013/api/Factura/obtener_medicamento_top')
-.then(response => response.json())
-.then(data => {
-	data.forEach(medicamento => {
-		const li = document.createElement('li');
-		li.className = "mb-2 shadow p-2 rounded flex justify-between bg-(--blanco-frio) text-(--negro-suave)";
+    const facturacionEl = document.getElementById('facturacionDiaria');
+    
+    const data = await obtenerDatos(
+        `${API_BASE}/Factura/obtener_ganancia?dia=${dia}&mes=${mes}&anio=${anio}`,
+        'Facturación Diaria',
+        true
+    );
 
-		li.innerHTML = `
-			<span>${medicamento.codigoDeBarra}</span>
-            <span>${medicamento.nombre}</span>
-            <span>${medicamento.cantidadVendidaTotal}</span>
-			<span class="bg-(--azul-dim) text-(--blanco-frio) w-[170px] text-center rounded">${medicamento.sucursal}</span>  
-		`
-		contMedicamentosTop.appendChild(li);
-	})
-});
+    if (data !== null) {
+        facturacionEl.textContent = formatearMoneda(parseFloat(data));
+    } else {
+        facturacionEl.innerHTML = '<span class="text-red-500 text-sm">Error</span>';
+    }
+};
 
-//Grafico de barras
-async function cargarGraficoGanancias() {
+// ===== CANTIDAD DE VENTAS =====
+const cargarCantidadVentas = async () => {
+    const cantidadVentasEl = document.getElementById('cantidadVentas');
+    cantidadVentasEl.textContent = '230';
+};
 
-    const res = await fetch("https://localhost:7013/api/Factura/obtener_ganancias_mensuales");
-	let data = await res.json();
+// ===== PRODUCTOS TOP =====
+const cargarProductosTop = async () => {
+    const container = document.getElementById('contProductosTop');
+    container.innerHTML = '<li class="flex justify-center py-4"><div class="spinner"></div></li>';
 
-	data = data.reverse();
+    const data = await obtenerDatos(
+        `${API_BASE}/Factura/obtener_producto_top`,
+        'Productos Top'
+    );
 
-	const nombresMeses = ["N/A", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+    if (!data || data.length === 0) {
+        container.innerHTML = '<li class="text-center text-gray-500 py-4">No hay datos</li>';
+        return;
+    }
 
-	const labels = data.map(x => nombresMeses[x.mes]);
-	const valores = data.map(x => x.importe);
+    container.innerHTML = data.map((producto, index) => `
+        <li class="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors duration-200 border border-gray-200">
+            <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center gap-3">
+                    <span class="text-2xl font-bold text-gray-400">#${index + 1}</span>
+                    <div>
+                        <p class="font-semibold text-gray-800">${producto.nombre || producto.codigoDeBarra}</p>
+                        <p class="text-xs text-gray-500">Código: ${producto.codigoDeBarra}</p>
+                    </div>
+                </div>
+                <span class="bg-[#446D9E] text-white px-3 py-1 rounded-full text-sm font-semibold">
+                    ${producto.cantidadVendidaTotal} ventas
+                </span>
+            </div>
+            <div class="text-xs text-gray-600 mt-2">
+                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">${producto.sucursal}</span>
+            </div>
+        </li>
+    `).join('');
+};
 
-	new Chart(document.getElementById("graficoGanancias"), {
-    	type: "bar",
-    	data: {
-        	labels: labels,
-        	datasets: [{
-            	label: "Ganancias mensuales",
-            	data: valores,
-            	backgroundColor: "#446D9E"
-        	}]
-    	},
-		options: {
-			responsive: true,
-			maintainAspectRatio: false,
-		}
-	});
-}
+// ===== MEDICAMENTOS TOP =====
+const cargarMedicamentosTop = async () => {
+    const container = document.getElementById('contMedicamentosTop');
+    container.innerHTML = '<li class="flex justify-center py-4"><div class="spinner"></div></li>';
 
-cargarGraficoGanancias();
+    const data = await obtenerDatos(
+        `${API_BASE}/Factura/obtener_medicamento_top`,
+        'Medicamentos Top'
+    );
 
-//Tortas
-async function cargarTortaMetodosPago() {
+    if (!data || data.length === 0) {
+        container.innerHTML = '<li class="text-center text-gray-500 py-4">No hay datos</li>';
+        return;
+    }
 
-    const res = await fetch("https://localhost:7013/api/Factura/obtener_metodo_pago_utilizado");
-    const datos = await res.json();
+    container.innerHTML = data.map((medicamento, index) => `
+        <li class="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors duration-200 border border-gray-200">
+            <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center gap-3">
+                    <span class="text-2xl font-bold text-gray-400">#${index + 1}</span>
+                    <div>
+                        <p class="font-semibold text-gray-800">${medicamento.nombre || medicamento.codigoDeBarra}</p>
+                        <p class="text-xs text-gray-500">Código: ${medicamento.codigoDeBarra}</p>
+                    </div>
+                </div>
+                <span class="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                    ${medicamento.cantidadVendidaTotal} ventas
+                </span>
+            </div>
+            <div class="text-xs text-gray-600 mt-2">
+                <span class="bg-green-100 text-green-800 px-2 py-1 rounded">${medicamento.sucursal}</span>
+            </div>
+        </li>
+    `).join('');
+};
 
-    const labels = datos.map(x => x.metodO_PAGO);
-    const valores = datos.map(x => x.cantidadMPUsado);
+// ===== GRÁFICO DE BARRAS - GANANCIAS =====
+let chartGanancias = null;
 
-    const coloresAzules = [
-        "#001F3F", "#003366", "#004C99", "#0066CC", "#0080FF",
-        "#3399FF", "#66B2FF", "#99CCFF", "#CCE5FF", "#80BFFF",
-        "#3385FF", "#1A75FF", "#005CE6", "#0047B3", "#003380"
-    ];
+const cargarGraficoGanancias = async () => {
+    const data = await obtenerDatos(
+        `${API_BASE}/Factura/obtener_ganancias_mensuales`,
+        'Gráfico Ganancias'
+    );
 
-    new Chart(document.getElementById("graficoMetodosPago"), {
-        type: "pie",
+    if (!data || data.length === 0) return;
+
+    const datosOrdenados = [...data].reverse();
+    const labels = datosOrdenados.map(x => MESES[x.mes]);
+    const valores = datosOrdenados.map(x => x.importe);
+
+    const ctx = document.getElementById('graficoGanancias');
+    
+    if (chartGanancias) chartGanancias.destroy();
+
+    chartGanancias = new Chart(ctx, {
+        type: 'bar',
         data: {
             labels: labels,
             datasets: [{
+                label: 'Ganancias ($)',
                 data: valores,
-                backgroundColor: coloresAzules.slice(0, labels.length)
+                backgroundColor: '#446D9E',
+                borderRadius: 8,
+                borderWidth: 2,
+                borderColor: '#3B5B8C'
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-			plugins: {
-				legend:{
-					display: false,
-				}
-    		}
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    padding: 12,
+                    callbacks: {
+                        label: (context) => `Ganancia: ${formatearMoneda(context.parsed.y)}`
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { callback: (value) => formatearMoneda(value) },
+                    grid: { color: 'rgba(0, 0, 0, 0.05)' }
+                },
+                x: { grid: { display: false } }
+            }
         }
     });
-}
-cargarTortaMetodosPago();
+};
 
+// ===== GRÁFICO DE TORTA - MÉTODOS DE PAGO =====
+let chartMetodosPago = null;
 
-async function cargarTortaSucursales() {
+const cargarGraficoMetodosPago = async () => {
+    const data = await obtenerDatos(
+        `${API_BASE}/Factura/obtener_metodo_pago_utilizado`,
+        'Métodos de Pago'
+    );
 
-    const res = await fetch("https://localhost:7013/api/Factura/obtener_ventas_por_sucursal");
-    const datos = await res.json();
+    if (!data || data.length === 0) return;
 
-    const labels = datos.map(x => x.sucursal);
-    const valores = datos.map(x => x.cantidadSucursal);
+    const labels = data.map(x => x.metodO_PAGO);
+    const valores = data.map(x => x.cantidadMPUsado);
 
-    const coloresAzules = [
-        "#001F3F", "#003366", "#004C99", "#0066CC", "#0080FF",
-        "#3399FF", "#66B2FF", "#99CCFF", "#CCE5FF", "#80BFFF",
-        "#3385FF", "#1A75FF", "#005CE6", "#0047B3", "#003380"
-    ];
+    const colores = ['#446D9E', '#3B5B8C', '#5A8BC4', '#7BA3D6', '#9CBBE8', '#003366', '#004C99', '#0066CC', '#3399FF', '#66B2FF'];
 
-    new Chart(document.getElementById("graficoSucursales"), {
-        type: "pie",
+    const ctx = document.getElementById('graficoMetodosPago');
+    
+    if (chartMetodosPago) chartMetodosPago.destroy();
+
+    chartMetodosPago = new Chart(ctx, {
+        type: 'doughnut',
         data: {
             labels: labels,
             datasets: [{
                 data: valores,
-                backgroundColor: coloresAzules.slice(0, labels.length)
+                backgroundColor: colores.slice(0, labels.length),
+                borderWidth: 3,
+                borderColor: '#ffffff'
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-			plugins: {
-				legend:{
-					display: false,
-				}
-    		}
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: { padding: 15, font: { size: 12 }, usePointStyle: true }
+                }
+            }
         }
     });
-}
-cargarTortaSucursales();
+};
+
+// ===== GRÁFICO DE TORTA - SUCURSALES =====
+let chartSucursales = null;
+
+const cargarGraficoSucursales = async () => {
+    const data = await obtenerDatos(
+        `${API_BASE}/Factura/obtener_ventas_por_sucursal`,
+        'Ventas por Sucursal'
+    );
+
+    if (!data || data.length === 0) return;
+
+    const labels = data.map(x => x.sucursal);
+    const valores = data.map(x => x.cantidadSucursal);
+
+    const colores = ['#22c55e', '#16a34a', '#15803d', '#166534', '#14532d', '#84cc16', '#65a30d', '#4d7c0f'];
+
+    const ctx = document.getElementById('graficoSucursales');
+    
+    if (chartSucursales) chartSucursales.destroy();
+
+    chartSucursales = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: valores,
+                backgroundColor: colores.slice(0, labels.length),
+                borderWidth: 3,
+                borderColor: '#ffffff'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: { padding: 15, font: { size: 12 }, usePointStyle: true }
+                }
+            }
+        }
+    });
+};
+
+// ===== INICIALIZACIÓN =====
+(async () => {
+    await Promise.all([
+        cargarFacturacionDiaria(),
+        cargarCantidadVentas(),
+        cargarProductosTop(),
+        cargarMedicamentosTop(),
+        cargarGraficoGanancias(),
+        cargarGraficoMetodosPago(),
+        cargarGraficoSucursales()
+    ]);
+})();

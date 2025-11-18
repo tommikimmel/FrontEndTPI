@@ -1,112 +1,107 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- Icono -->
     <link rel="icon" href="/src/assets/icon.ico" type="image/x-icon">
     <title>Sistema Farmacia</title>
-    <style>
-        :root {
-            --celeste-ice: #AEE3FF;
-            --azul-dim: #446D9E;
-            --azul-dim-hover: #3B5B8C;
-            --plata-mate: #BCC7D1;
-            --blanco-frio: #F9FBFD;
-            --blanco-sucio: #f7f7f7;
-            --negro-suave: #2E2E2E;
-        }
-    </style>
 </head>
-<body >
+<body>
     <section id="PrimeraSeccion" class="bg-[url('/src/assets/fondoInicio.webp')] bg-cover bg-top min-h-screen">
-        <header class="bg-(--azul-dim) h-20 flex justify-between items-center px-4 shadow-md">
+        <header class="bg-[#446D9E] h-20 flex justify-between items-center px-4 shadow-md">
             <div class="logo">
-                <h2 class="text-2xl font-semibold text-(--blanco-frio)">Sistema Farmacia</h2>
+                <h2 class="text-2xl font-semibold text-[#F9FBFD]">Sistema Farmacia</h2>
             </div>
             <div class="p-4 flex items-center justify-between gap-4">
-                <a href="./src/autenticacion/login.html" class="text-(--azul-dim) bg-(--blanco-frio) px-4 py-2 rounded hover:bg-(--azul-dim-hover) hover:text-(--blanco-frio) font-semibold transition">Iniciar Sesión</a>
-                <a href="register.html" class="text-(--blanco-frio) px-4 py-2 rounded hover:bg-(--azul-dim-hover) font-semibold transition">Registrarse</a>
+                <a href="./src/autenticacion/login.html" class="text-[#446D9E] bg-[#F9FBFD] px-4 py-2 rounded hover:bg-[#3B5B8C] hover:text-[#F9FBFD] font-semibold transition-all duration-300">Iniciar Sesión</a>
+                <a href="./src/autenticacion/register.html" class="text-[#F9FBFD] px-4 py-2 rounded hover:bg-[#3B5B8C] font-semibold transition-all duration-300">Registrarse</a>
             </div>
         </header>
 
         <main class="h-screen flex items-center justify-start">
             <div class="w-1/2 p-8">
-                <h1 class="text-4xl font-bold mb-4 text-(--negro-suave)">¡Bienvenidos al sistema de <strong class="text-(--azul-dim)">Farmacias!</strong></h1>
-                <p class="mt-4 mb-6">Este es un sistema diseñado para facilitar la gestión de farmacias, permitiendo un acceso rápido y eficiente a la información necesaria.</p>
-                <a href="#funciones" class="text-(--azul-dim) bg-(--blanco-frio) px-4 py-2 rounded hover:bg-(--azul-dim-hover) hover:text-(--blanco-frio) font-semibold transition">Ver Funciones</a>
+                <h1 class="text-4xl font-bold mb-4 text-[#2E2E2E]">¡Bienvenidos al sistema de <strong class="text-[#446D9E]">Farmacias!</strong></h1>
+                <p class="mt-4 mb-6 text-lg text-gray-700">Este es un sistema diseñado para facilitar la gestión de farmacias, permitiendo un acceso rápido y eficiente a la información necesaria.</p>
+                <a href="#funciones" class="inline-block text-[#446D9E] bg-[#F9FBFD] px-6 py-3 rounded hover:bg-[#3B5B8C] hover:text-[#F9FBFD] font-semibold transition-all duration-300 shadow-md hover:shadow-lg">Ver Funciones</a>
             </div>
         </main>
     </section>
 
-    <section id="sobreNosotros" class="bg-(--blanco-sucio) pt-6 pb-8 pl-4">
-        <h1 class="text-2xl font-bold mb-4 text-(--negro-suave) ml-4">Sobre Nosotros</h1>
-        <p class="bg-(--blanco-frio) p-4 rounded shadow mb-4">Somos un equipo de desarrollo formado en la <strong class="text-(--azul-dim)">Universidad Tecnológica Nacional, Facultad Regional Córdoba</strong>, dedicado a crear soluciones modernas y accesibles para el sector farmacéutico. Nuestro objetivo es brindar herramientas <strong class="text-(--azul-dim)">claras, confiables y fáciles de usar</strong> que ayuden a optimizar la administración diaria de una farmacia: desde el control del inventario y las ventas, hasta la gestión de clientes, proveedores y reportes. Creemos en el valor de la tecnología aplicada a la salud, y <strong class="text-(--azul-dim)">trabajamos con compromiso</strong> para ofrecer sistemas que realmente simplifiquen el trabajo de quienes sostienen estos servicios esenciales.</p>
-        <h3 class="mb-2 text-(--azul-dim) font-semibold text-xl">¿Que buscamos?</h3>
-        <p class="bg-(--blanco-frio) p-4 rounded shadow">Buscamos desarrollar herramientas que le permitan a cualquier farmacia administrar su negocio de manera más simple, ágil y eficiente. Nuestra misión es transformar procesos que hoy son complejos o manuales en soluciones digitales claras, seguras y accesibles. Queremos que cada farmacia, sin importar su tamaño, pueda contar con una plataforma confiable para gestionar inventarios, ventas, clientes, proveedores y reportes en un solo lugar. Aspiramos a que la tecnología sea un aliado real para mejorar la organización diaria y facilitar la toma de decisiones basada en información precisa.</p>
+    <section id="sobreNosotros" class="bg-[#f7f7f7] pt-8 pb-10 px-6">
+        <h1 class="text-3xl font-bold mb-6 text-[#2E2E2E]">Sobre Nosotros</h1>
+        <p class="bg-[#F9FBFD] p-6 rounded-lg shadow-md mb-6 text-gray-700 leading-relaxed">
+            Somos un equipo de desarrollo formado en la <strong class="text-[#446D9E]">Universidad Tecnológica Nacional, Facultad Regional Córdoba</strong>, dedicado a crear soluciones modernas y accesibles para el sector farmacéutico. Nuestro objetivo es brindar herramientas <strong class="text-[#446D9E]">claras, confiables y fáciles de usar</strong> que ayuden a optimizar la administración diaria de una farmacia: desde el control del inventario y las ventas, hasta la gestión de clientes, proveedores y reportes. Creemos en el valor de la tecnología aplicada a la salud, y <strong class="text-[#446D9E]">trabajamos con compromiso</strong> para ofrecer sistemas que realmente simplifiquen el trabajo de quienes sostienen estos servicios esenciales.
+        </p>
+        <h3 class="mb-4 text-[#446D9E] font-semibold text-2xl">¿Qué buscamos?</h3>
+        <p class="bg-[#F9FBFD] p-6 rounded-lg shadow-md text-gray-700 leading-relaxed">
+            Buscamos desarrollar herramientas que le permitan a cualquier farmacia administrar su negocio de manera más simple, ágil y eficiente. Nuestra misión es transformar procesos que hoy son complejos o manuales en soluciones digitales claras, seguras y accesibles. Queremos que cada farmacia, sin importar su tamaño, pueda contar con una plataforma confiable para gestionar inventarios, ventas, clientes, proveedores y reportes en un solo lugar. Aspiramos a que la tecnología sea un aliado real para mejorar la organización diaria y facilitar la toma de decisiones basada en información precisa.
+        </p>
     </section>
 
-    <section id="funciones" class="bg-white pt-6">
-        <h1 class="text-2xl font-bold mb-4 text-(--negro-suave) ml-4">Funcionalidades</h1>
-        <div id="contCards" class="grid grid-cols-5 gap-4 px-4">
-            <div class="card bg-(--blanco-frio) p-4 rounded shadow py-6 text-center ">
-                <h3 class="text-xl font-semibold mb-2">📦 Gestión de Inventario</h3>
+    <section id="funciones" class="bg-white pt-8 pb-10 px-6">
+        <h1 class="text-3xl font-bold mb-6 text-[#2E2E2E]">Funcionalidades</h1>
+        <div id="contCards" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+            <div class="card bg-[#F9FBFD] p-6 rounded-lg shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 text-center border border-[#BCC7D1]">
+                <div class="text-4xl mb-4">📦</div>
+                <h3 class="text-xl font-semibold mb-3 text-[#446D9E]">Gestión de Inventario</h3>
                 <p class="text-gray-600">Controla y administra el inventario de productos de la farmacia de manera eficiente.</p>
             </div>
-            <div class="card bg-(--blanco-frio) p-4 rounded shadow py-6 text-center flex flex-col items-center">
-                <h3 class="text-xl font-semibold mb-2">🛒 Gestión de Ventas</h3>
+            <div class="card bg-[#F9FBFD] p-6 rounded-lg shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 text-center border border-[#BCC7D1]">
+                <div class="text-4xl mb-4">🛒</div>
+                <h3 class="text-xl font-semibold mb-3 text-[#446D9E]">Gestión de Ventas</h3>
                 <p class="text-gray-600">Registra y supervisa las ventas realizadas en la farmacia.</p>
             </div>
-            <div class="card bg-(--blanco-frio) p-4 rounded shadow py-6 text-center flex flex-col items-center">
-                <h3 class="text-xl font-semibold mb-2">👥 Gestión de Clientes</h3>
+            <div class="card bg-[#F9FBFD] p-6 rounded-lg shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 text-center border border-[#BCC7D1]">
+                <div class="text-4xl mb-4">👥</div>
+                <h3 class="text-xl font-semibold mb-3 text-[#446D9E]">Gestión de Clientes</h3>
                 <p class="text-gray-600">Mantén un registro detallado de los clientes y sus compras.</p>
             </div>
-            <div class="card bg-(--blanco-frio) p-4 rounded shadow py-6 text-center flex flex-col items-center">
-                <h3 class="text-xl font-semibold mb-2">📊 Reportes y Análisis</h3>
+            <div class="card bg-[#F9FBFD] p-6 rounded-lg shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 text-center border border-[#BCC7D1]">
+                <div class="text-4xl mb-4">📊</div>
+                <h3 class="text-xl font-semibold mb-3 text-[#446D9E]">Reportes y Análisis</h3>
                 <p class="text-gray-600">Genera reportes detallados para analizar el rendimiento de la farmacia.</p>
             </div>
-            <div class="card bg-(--blanco-frio) p-4 rounded shadow py-6 text-center flex flex-col items-center">
-                <h3 class="text-xl font-semibold mb-2">🚚 Gestión de Proveedores</h3>
+            <div class="card bg-[#F9FBFD] p-6 rounded-lg shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 text-center border border-[#BCC7D1]">
+                <div class="text-4xl mb-4">🚚</div>
+                <h3 class="text-xl font-semibold mb-3 text-[#446D9E]">Gestión de Proveedores</h3>
                 <p class="text-gray-600">Administra la información de los proveedores y las órdenes de compra.</p>
             </div>
         </div>
     </section>
 
-    <section id="preguntasFrecuentes" class="pt-6 pb-8 mt-8 bg-(--blanco-sucio)">
-        <h1 class="text-2xl font-bold mb-4 text-(--negro-suave) ml-4">Preguntas Frecuentes</h1>
-        <div class="contPreguntas px-6">
-            <div class="pregunta shadow-md p-4 rounded mb-4 bg-(--blanco-frio)">
-                <h3 class="font-semibold text-(--azul-dim)">¿Cómo puedo registrarme?</h3>
+    <section id="preguntasFrecuentes" class="pt-8 pb-10 px-6 bg-[#f7f7f7]">
+        <h1 class="text-3xl font-bold mb-6 text-[#2E2E2E]">Preguntas Frecuentes</h1>
+        <div class="contPreguntas space-y-4 max-w-4xl mx-auto">
+            <div class="pregunta shadow-md p-6 rounded-lg bg-[#F9FBFD] hover:shadow-lg transition-shadow duration-300">
+                <h3 class="font-semibold text-[#446D9E] text-lg mb-2">¿Cómo puedo registrarme?</h3>
                 <p class="text-gray-600">Puedes registrarte haciendo clic en el botón <strong>"Registrarse"</strong> en la parte superior de la página.</p>
             </div>
-            <div class="pregunta shadow-md p-4 rounded mb-4 bg-(--blanco-frio)">
-                <h3 class="font-semibold text-(--azul-dim)">¿Olvidé mi contraseña, qué hago?</h3>
+            <div class="pregunta shadow-md p-6 rounded-lg bg-[#F9FBFD] hover:shadow-lg transition-shadow duration-300">
+                <h3 class="font-semibold text-[#446D9E] text-lg mb-2">¿Olvidé mi contraseña, qué hago?</h3>
                 <p class="text-gray-600">Si olvidaste tu contraseña, puedes restablecerla desde la página de inicio de sesión.</p>
             </div>
-            <div class="pregunta shadow-md p-4 rounded mb-4 bg-(--blanco-frio)">
-                <h3 class="font-semibold text-(--azul-dim)">¿Cómo puedo contactar al soporte?</h3>
+            <div class="pregunta shadow-md p-6 rounded-lg bg-[#F9FBFD] hover:shadow-lg transition-shadow duration-300">
+                <h3 class="font-semibold text-[#446D9E] text-lg mb-2">¿Cómo puedo contactar al soporte?</h3>
                 <p class="text-gray-600">Puedes contactar al soporte a través del formulario de contacto en la página o llamando al número proporcionado.</p>
             </div>
         </div>
     </section>
 
-    <section id="contacto" class="pt-6 pb-8 mt-8 bg-white">
-        <h1 class="text-2xl font-bold mb-4 text-(--negro-suave) ml-4">Contacto</h1>
-        <form action="" class="px-6 flex flex-col space-y-2">
-            <input type="text" placeholder="Tu nombre" class="p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-(--azul-dim)">
-            <input type="email" placeholder="Tu correo electrónico" class="p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-(--azul-dim)">
-            <textarea placeholder="Tu mensaje" class="p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-(--azul-dim)"></textarea>
-            <button type="submit" class="mt-2 bg-(--azul-dim) text-(--blanco-frio) px-4 py-2 rounded hover:bg-(--azul-dim-hover) transition">Enviar</button>
+    <section id="contacto" class="pt-8 pb-10 px-6 bg-white">
+        <h1 class="text-3xl font-bold mb-6 text-[#2E2E2E]">Contacto</h1>
+        <form action="" class="max-w-2xl mx-auto space-y-4">
+            <input type="text" placeholder="Tu nombre" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#446D9E] focus:border-transparent transition-all" required>
+            <input type="email" placeholder="Tu correo electrónico" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#446D9E] focus:border-transparent transition-all" required>
+            <textarea placeholder="Tu mensaje" rows="5" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#446D9E] focus:border-transparent transition-all" required></textarea>
+            <button type="submit" class="w-full bg-[#446D9E] text-[#F9FBFD] px-6 py-3 rounded-lg hover:bg-[#3B5B8C] transition-all duration-300 font-semibold shadow-md hover:shadow-lg">Enviar</button>
         </form>
     </section>
 
-    <footer class="mt-8">
-        <section class="bg-(--azul-dim) h-20 flex justify-center items-center px-4 shadow-md mt-8">
-            <div class="logo">
-                <h2 class="text-lg font-semibold text-(--blanco-frio)">© 2024 Sistema Farmacia. Todos los derechos reservados.</h2>
-            </div>
-        </section>
+    <footer class="bg-[#446D9E] py-6 mt-8">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h2 class="text-lg font-semibold text-[#F9FBFD]">© 2024 Sistema Farmacia. Todos los derechos reservados.</h2>
+        </div>
     </footer>
 </body>
 </html>
