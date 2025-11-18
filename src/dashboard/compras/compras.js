@@ -48,6 +48,7 @@ async function cargarCompras() {
     if (proveedorVal) url.searchParams.set('proveedor', proveedorVal);
     if (fechaInicioVal) url.searchParams.set('fechaInicio', fechaInicioVal);
     if (fechaFinVal) url.searchParams.set('fechaFin', fechaFinVal);
+    
     const existingOverlay = contCompras.querySelector('.detalleCompra') || document.querySelector('.detalleCompra');
     contCompras.innerHTML = '';
     if (existingOverlay) contCompras.appendChild(existingOverlay);
